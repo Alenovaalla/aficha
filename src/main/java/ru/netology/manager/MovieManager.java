@@ -2,7 +2,7 @@ package ru.netology.manager;
 
 import lombok.Data;
 import ru.netology.domain.Movie;
-@Data
+
 
 public class MovieManager {
 
@@ -35,14 +35,33 @@ public class MovieManager {
     return result;
   }
 
-  public Movie[]getLast(){
-    Movie[] result = new Movie[afishaLength];
-    for (int i = 0; i<afishaLength; i++) {
-    int index = items.length - i - 1;
-    result[i] = items[index];
+  public Movie[] getLast() {
+
+    if (items.length < afishaLength) {
+      Movie[] result = new Movie[items.length];
+      for (int i = 0; i < items.length; i++) {
+        int index = items.length - i - 1;
+        result[i] = items[index];
+      }
+      return result;
+    }
+
+    if (items.length >= afishaLength) {
+      Movie[] result = new Movie[afishaLength];
+      for (int i = 0; i < afishaLength; i++) {
+        int index = items.length - i - 1;
+        result[i] = items[index];
+      }
+      return result;
+    }
+    return null;
   }
-  return result;
 }
 
-}
+
+
+
+
+
+
 
