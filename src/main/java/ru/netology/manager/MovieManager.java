@@ -46,7 +46,7 @@ public class MovieManager {
       return result;
     }
 
-    if (items.length >= afishaLength) {
+    else {
       Movie[] result = new Movie[afishaLength];
       for (int i = 0; i < afishaLength; i++) {
         int index = items.length - i - 1;
@@ -54,7 +54,6 @@ public class MovieManager {
       }
       return result;
     }
-    return null;
   }
 }
 
