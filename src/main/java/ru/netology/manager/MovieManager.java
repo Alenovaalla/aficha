@@ -1,60 +1,60 @@
 package ru.netology.manager;
 
-import lombok.Data;
+
 import ru.netology.domain.Movie;
+import ru.netology.repository.MovieRepository;
 
 
 public class MovieManager {
 
-  private int afishaLength = 10;
+    private int afishaLength = 10;
 
-  private Movie[] items = new Movie[0];
+    private MovieRepository repository;
 
-  public MovieManager(int afishaLength) {
-    this.afishaLength = afishaLength;
-  }
-
-  public MovieManager() {
-  }
-
-  public void add(Movie item) {
-    int length = items.length + 1;
-    Movie[] tmp = new Movie[length];
-    System.arraycopy(items, 0, tmp, 0, items.length);
-    int lastIndex = tmp.length - 1;
-    tmp[lastIndex] = item;
-    items = tmp;
-  }
-
-  public Movie[] getAll() {
-    Movie[] result = new Movie[items.length];
-    for (int i = 0; i < result.length; i++) {
-      int index = items.length - i - 1;
-      result[i] = items[index];
-    }
-    return result;
-  }
-
-  public Movie[] getLast() {
-
-    if (items.length < afishaLength) {
-      Movie[] result = new Movie[items.length];
-      for (int i = 0; i < items.length; i++) {
-        int index = items.length - i - 1;
-        result[i] = items[index];
-      }
-      return result;
+    public MovieManager(MovieRepository repository) {
+        this.repository = repository;
     }
 
-    else {
-      Movie[] result = new Movie[afishaLength];
-      for (int i = 0; i < afishaLength; i++) {
-        int index = items.length - i - 1;
-        result[i] = items[index];
-      }
-      return result;
+    public MovieManager(int afishaLength) {
+        this.afishaLength = afishaLength;
     }
-  }
+
+    public MovieManager() {
+    }
+
+    public void add(Movie movie) {
+        repository.save(movie);
+    }
+
+    public Movie[] getAll() {
+        Movie[] movie = repository.findAll();
+        Movie[] result = new Movie[movie.length];
+        for (int i = 0; i < result.length; i++) {
+            int index = movie.length - i - 1;
+            result[i] = movie[index];
+        }
+        return result;
+    }
+
+    public Movie[] getLast() {
+        Movie[] movies = repository.findAll();
+
+        if (movies.length < afishaLength) {
+            Movie[] result = new Movie[movies.length];
+            for (int i = 0; i < movies.length; i++) {
+                int index = movies.length - i - 1;
+                result[i] = movies[index];
+            }
+            return result;
+        } else {
+            Movie[] result = new Movie[afishaLength];
+            for (int i = 0; i < afishaLength; i++) {
+                int index = movies.length - i - 1;
+                result[i] = movies[index];
+            }
+            return result;
+        }
+    }
 }
 
 

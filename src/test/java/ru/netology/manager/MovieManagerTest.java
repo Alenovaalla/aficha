@@ -1,11 +1,21 @@
 package ru.netology.manager;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.netology.domain.Movie;
+import ru.netology.repository.MovieRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
+
 public class MovieManagerTest {
+    @Mock
+    MovieRepository repository;
+
 
     Movie first = new Movie(1, "A", "drama", "1");
     Movie second = new Movie(2, "B", "drama", "2");
@@ -22,7 +32,7 @@ public class MovieManagerTest {
 
     @Test
     public void shouldAdd() {
-        MovieManager manager = new MovieManager();
+        MovieManager manager = new MovieManager(new MovieRepository());
         manager.add(first);
         manager.add(second);
         manager.add(third);
@@ -35,7 +45,7 @@ public class MovieManagerTest {
 
     @Test
     public void shouldGetLast() {
-        MovieManager manager = new MovieManager();
+        MovieManager manager = new MovieManager(new MovieRepository());
         manager.add(first);
         manager.add(second);
         manager.add(third);
@@ -54,30 +64,10 @@ public class MovieManagerTest {
         assertArrayEquals(expected, actual);
     }
 
-    @Test
-    public void shouldGetLast5() {
-        MovieManager manager = new MovieManager(5);
-        manager.add(first);
-        manager.add(second);
-        manager.add(third);
-        manager.add(fourth);
-        manager.add(fifth);
-        manager.add(sixth);
-        manager.add(seventh);
-        manager.add(eighth);
-        manager.add(ninth);
-        manager.add(tenth);
-        manager.add(eleventh);
-
-        Movie[] actual = manager.getLast();
-        Movie[] expected = new Movie[]{eleventh, tenth, ninth, eighth, seventh};
-
-        assertArrayEquals(expected, actual);
-    }
 
     @Test
     public void shouldGetLastIfItemsLengthLessAfishaLength() {
-        MovieManager manager = new MovieManager();
+        MovieManager manager = new MovieManager(new MovieRepository());
         manager.add(first);
         manager.add(second);
         manager.add(third);
@@ -94,7 +84,7 @@ public class MovieManagerTest {
 
     @Test
     public void shouldGetLastIfItemsLengthLessAfishaLength1() {
-        MovieManager manager = new MovieManager();
+        MovieManager manager = new MovieManager(new MovieRepository());
         Movie[] actual = manager.getLast();
         Movie[] expected = new Movie[0];
 
