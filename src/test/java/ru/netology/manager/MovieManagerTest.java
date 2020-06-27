@@ -1,5 +1,6 @@
 package ru.netology.manager;
 
+import net.sf.saxon.expr.Component;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,12 +10,15 @@ import ru.netology.domain.Movie;
 import ru.netology.repository.MovieRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 
 public class MovieManagerTest {
     @Mock
     MovieRepository repository;
+    @InjectMocks
+    MovieManager manager = new MovieManager(repository);
 
 
     Movie first = new Movie(1, "A", "drama", "1");
@@ -29,23 +33,40 @@ public class MovieManagerTest {
     Movie tenth = new Movie(10, "J", "drama", "10");
     Movie eleventh = new Movie(11, "K", "drama", "11");
 
-
     @Test
+
     public void shouldAdd() {
+
         MovieManager manager = new MovieManager(new MovieRepository());
+        Movie[] returned = new Movie[] {first};
+        doReturn(returned).when(repository).findAll();
         manager.add(first);
-        manager.add(second);
-        manager.add(third);
-
-        Movie[] actual = manager.getAll();
-        Movie[] expected = new Movie[]{third, second, first};
-
+        Movie[] expected = new Movie[] {first};
+        Movie[] actual = repository.findAll();
         assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shouldGetLast() {
+
+    public void shouldGetAll() {
+
         MovieManager manager = new MovieManager(new MovieRepository());
+        Movie[] returned = new Movie[] {first};
+        doReturn(returned).when(repository).findAll();
+        manager.add(first);
+        manager.getAll();
+        Movie[] expected = new Movie[] {first};
+        Movie[] actual = repository.findAll();
+        assertArrayEquals(expected,actual);
+    }
+
+    @Test
+
+    public void shouldGetLast() {
+
+        MovieManager manager = new MovieManager(new MovieRepository());
+        Movie[] returned = new Movie[] {first, second,third,fourth, fifth, sixth, seventh,eighth, ninth,tenth};
+        doReturn(returned).when(repository).findAll();
         manager.add(first);
         manager.add(second);
         manager.add(third);
@@ -56,40 +77,14 @@ public class MovieManagerTest {
         manager.add(eighth);
         manager.add(ninth);
         manager.add(tenth);
-        manager.add(eleventh);
+        manager.getLast();
 
-        Movie[] actual = manager.getLast();
-        Movie[] expected = new Movie[]{eleventh, tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second};
-
+        Movie[] expected = new Movie[] {tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second, first};
+        Movie[] actual = repository.findAll();
         assertArrayEquals(expected, actual);
     }
 
 
-    @Test
-    public void shouldGetLastIfItemsLengthLessAfishaLength() {
-        MovieManager manager = new MovieManager(new MovieRepository());
-        manager.add(first);
-        manager.add(second);
-        manager.add(third);
-        manager.add(fourth);
-        manager.add(fifth);
-        manager.add(sixth);
-
-
-        Movie[] actual = manager.getLast();
-        Movie[] expected = new Movie[]{sixth, fifth, fourth, third, second, first};
-
-        assertArrayEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldGetLastIfItemsLengthLessAfishaLength1() {
-        MovieManager manager = new MovieManager(new MovieRepository());
-        Movie[] actual = manager.getLast();
-        Movie[] expected = new Movie[0];
-
-        assertArrayEquals(expected, actual);
-    }
 
 
 }
