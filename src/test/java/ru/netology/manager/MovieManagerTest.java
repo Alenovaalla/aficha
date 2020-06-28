@@ -1,11 +1,24 @@
 package ru.netology.manager;
 
+import net.sf.saxon.expr.Component;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.netology.domain.Movie;
+import ru.netology.repository.MovieRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
 
 public class MovieManagerTest {
+    @Mock
+    MovieRepository repository;
+    @InjectMocks
+    MovieManager manager = new MovieManager(repository);
 
     Movie first = new Movie(1, "A", "drama", "1");
     Movie second = new Movie(2, "B", "drama", "2");
@@ -21,85 +34,42 @@ public class MovieManagerTest {
 
 
     @Test
-    public void shouldAdd() {
-        MovieManager manager = new MovieManager();
-        manager.add(first);
-        manager.add(second);
-        manager.add(third);
+    public void shouldGetAll() {
 
+        Movie[] returned = new Movie[]{first};
+        doReturn(returned).when(repository).findAll();
+        Movie[] expected = new Movie[]{first};
         Movie[] actual = manager.getAll();
-        Movie[] expected = new Movie[]{third, second, first};
-
         assertArrayEquals(expected, actual);
     }
 
     @Test
     public void shouldGetLast() {
-        MovieManager manager = new MovieManager();
-        manager.add(first);
-        manager.add(second);
-        manager.add(third);
-        manager.add(fourth);
-        manager.add(fifth);
-        manager.add(sixth);
-        manager.add(seventh);
-        manager.add(eighth);
-        manager.add(ninth);
-        manager.add(tenth);
-        manager.add(eleventh);
 
+        Movie[] returned = new Movie[]{first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth};
+        doReturn(returned).when(repository).findAll();
+        Movie[] expected = new Movie[]{tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second, first};
         Movie[] actual = manager.getLast();
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldGetLast1() {
+
+        Movie[] returned = new Movie[]{first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh};
+        doReturn(returned).when(repository).findAll();
         Movie[] expected = new Movie[]{eleventh, tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second};
-
+        Movie[] actual = manager.getLast();
         assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shouldGetLast5() {
-        MovieManager manager = new MovieManager(5);
-        manager.add(first);
-        manager.add(second);
-        manager.add(third);
-        manager.add(fourth);
-        manager.add(fifth);
-        manager.add(sixth);
-        manager.add(seventh);
-        manager.add(eighth);
-        manager.add(ninth);
-        manager.add(tenth);
-        manager.add(eleventh);
+    public void shouldGetLast3() {
 
+        Movie[] returned = new Movie[]{first, second, third, fourth};
+        doReturn(returned).when(repository).findAll();
+        Movie[] expected = new Movie[]{fourth, third, second, first};
         Movie[] actual = manager.getLast();
-        Movie[] expected = new Movie[]{eleventh, tenth, ninth, eighth, seventh};
-
         assertArrayEquals(expected, actual);
     }
-
-    @Test
-    public void shouldGetLastIfItemsLengthLessAfishaLength() {
-        MovieManager manager = new MovieManager();
-        manager.add(first);
-        manager.add(second);
-        manager.add(third);
-        manager.add(fourth);
-        manager.add(fifth);
-        manager.add(sixth);
-
-
-        Movie[] actual = manager.getLast();
-        Movie[] expected = new Movie[]{sixth, fifth, fourth, third, second, first};
-
-        assertArrayEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldGetLastIfItemsLengthLessAfishaLength1() {
-        MovieManager manager = new MovieManager();
-        Movie[] actual = manager.getLast();
-        Movie[] expected = new Movie[0];
-
-        assertArrayEquals(expected, actual);
-    }
-
-
 }
