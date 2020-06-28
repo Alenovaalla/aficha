@@ -20,7 +20,7 @@ public class MovieRepository {
         return movies;
     }
 
-    public void  removeAll() {
+    public void removeAll() {
         movies = new Movie[0];
     }
 

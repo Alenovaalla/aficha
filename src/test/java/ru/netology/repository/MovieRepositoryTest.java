@@ -9,9 +9,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class MovieRepositoryTest {
     private MovieRepository repository = new MovieRepository();
 
+    Movie first = new Movie(1, "A", "drama", "1");
+    Movie second = new Movie(2, "B", "drama", "2");
+    Movie third = new Movie(3, "C", "drama", "3");
+    Movie fourth = new Movie(4, "D", "drama", "4");
+
     @Test
     void shouldSave() {
-        Movie first = new Movie(1, "A", "drama", "1");
 
         repository.save(first);
 
@@ -24,10 +28,6 @@ class MovieRepositoryTest {
 
     @Test
     void shouldFindAll() {
-        Movie first = new Movie(1, "A", "drama", "1");
-        Movie second = new Movie(2, "B", "drama", "2");
-        Movie third = new Movie(3, "C", "drama", "3");
-        Movie fourth = new Movie(4, "D", "drama", "4");
 
         repository.save(first);
         repository.save(second);
@@ -43,8 +43,6 @@ class MovieRepositoryTest {
 
     @Test
     void shouldRemoveAll() {
-        Movie first = new Movie(1, "A", "drama", "1");
-        Movie second = new Movie(2, "B", "drama", "2");
 
         repository.save(first);
         repository.save(second);
@@ -58,8 +56,7 @@ class MovieRepositoryTest {
 
     @Test
     void shouldRemoveById() {
-        Movie first = new Movie(1, "A", "drama", "1");
-        Movie second = new Movie(2, "B", "drama", "2");
+
         repository.save(first);
         repository.save(second);
         repository.removeById(1);
@@ -72,8 +69,7 @@ class MovieRepositoryTest {
 
     @Test
     void shouldFindById() {
-        Movie first = new Movie(1, "A", "drama", "1");
-        Movie second = new Movie(2, "B", "drama", "2");
+
         repository.save(first);
         repository.save(second);
 
@@ -84,8 +80,7 @@ class MovieRepositoryTest {
 
     @Test
     void shouldFindByIdIfNotExist() {
-        Movie first = new Movie(1, "A", "drama", "1");
-        Movie second = new Movie(2, "B", "drama", "2");
+
         repository.save(first);
         repository.save(second);
 

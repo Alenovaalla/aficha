@@ -28,25 +28,16 @@ public class MovieManager {
 
     public Movie[] getLast() {
         Movie[] movies = repository.findAll();
-
-        if (movies.length < afishaLength) {
-            Movie[] result = new Movie[movies.length];
-            for (int i = 0; i < movies.length; i++) {
-                int index = movies.length - i - 1;
-                result[i] = movies[index];
-            }
-            return result;
-        } else {
-            Movie[] result = new Movie[afishaLength];
-            for (int i = 0; i < afishaLength; i++) {
-                int index = movies.length - i - 1;
-                result[i] = movies[index];
-            }
-            return result;
+        int resultLength = movies.length;
+        if (resultLength > afishaLength) resultLength = afishaLength;
+        Movie[] result = new Movie[resultLength];
+        for (int i = 0; i < resultLength; i++) {
+            int index = movies.length - i - 1;
+            result[i] = movies[index];
         }
+        return result;
     }
 }
-
 
 
 
